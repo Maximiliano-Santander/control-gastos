@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Gastos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Control de Gastos Mensuales</h1>
+
+    <!-- Selección de mes -->
+    <section id="seleccion-fecha">
+        <label for="mes-registro">Selecciona un mes:</label>
+        <input type="month" id="mes-registro">
+
+        <label for="input-sueldo">Sueldo disponible para este mes (Opcional):</label>
+        <input type="number" id="input-sueldo" placeholder="Ej: $200000">
+    </section>
+
+    <!-- Contenedor principal: formulario + lista -->
+    <section id="contenedor-principal">
+
+        <!-- Columna izquierda: formulario -->
+        <div id="columna-formulario">
+            <section id="formulario-gasto" style="display: none;">
+                <h2>Agregar Gasto para <span id="mes-seleccionado"></span></h2>
+
+                <form id="gasto-form">
+                    <input type="text" id="nombre" placeholder="Nombre del gasto (ej: Agua)" required>
+                    <input type="number" id="monto" placeholder="Monto en pesos ($)" required>
+                    <input type="date" id="fecha-gasto" required>
+
+                    <label>
+                        <input type="checkbox" id="estado"> ¿Pagado?
+                    </label>
+
+                    <button type="submit">Agregar Gasto</button>
+                </form>
+
+            </section>
+        </div>
+
+        <!-- Columna derecha: gastos -->
+        <div id="columna-gastos">
+            <section id="seccion-gastos">
+                <h2>Gastos Registrados</h2>
+                <ul id="lista-gastos"></ul>
+            </section>
+        </div>
+
+    </section>
+
+    <!-- Total del mes debajo -->
+    <section id="seccion-total">
+
+        <h3>Total del Mes: $<span id="total">0</span></h3>
+
+        <!-- sueldo para agregar -->
+
+        <div id="info-sueldo" style="display: none;">
+            <p>Sueldo: $span id="sueldo-mostrado"</span></p>
+            <p>Saldo restante: $span id="saldo-restante"</span></p>
+        </div>
+
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
