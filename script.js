@@ -22,6 +22,32 @@ mesRegistro.addEventListener('change', () => {
     }
 });
 
+// Lista de meses
+function mostrarMesesRegistrados() {
+    const ul = document.getElementById('meses-registrados');
+    ul.innerHTML = '';
+
+    const clavesMeses = Object.keys(gastos);
+    if (clavesMeses.length === 0) {
+        ul.innerHTML = '<li>No hay meses registrados aún.</li>';
+        return;
+    }
+
+    clavesMeses.forEach(mes => {
+        const li = document.createElement('li');
+        const boton = document.createElement('button');
+        boton.textContent = obtenerNombreMes(mes);
+        boton.onclick = () => seleccionarMes(mes);
+        li.appendChild(boton);
+        ul.appendChild(li);
+    });
+}
+
+function seleccionarMes(mes) {
+    document.getElementById('mes-registro').value = mes;
+    document.getElementById('mes-registro').dispatchEvent(new Event('change'));
+}
+
 inputSueldo.addEventListener('input', () => {
     const nuevoSueldo = parseFloat(inputSueldo.value);
     if (!mesActual) return;
@@ -82,7 +108,7 @@ function mostrarGastosPorMes(mes) {
     const li = document.createElement('li');
     li.innerHTML = `
         ${gasto.nombre} - $${gasto.monto} - ${gasto.fecha} - ${gasto.pagado ? '✅ Pagado' : '❌ No pagado'}
-        <button onclick="eliminarGasto ('${mes}', ${index}) id="delete" ">Eliminar</button>`;
+        <button onclick="eliminarGasto ('${mes}', ${index}) id="delete">Eliminar</button>`;
 
         listaGastos.appendChild(li);
     });
@@ -101,14 +127,16 @@ function mostrarGastosPorMes(mes) {
     } else {
         infoSueldo.style.display = 'none';
     }
+
+    mostrarMesesRegistrados(); // refresca la vista cuando se agregan/eliminan datos
 }
 
 // Eliminar gasto seleccionado
 function eliminarGasto(mes, index) {
-    gastos[mes].splice(index, 1);
+    gastos[mes].lista.splice(index, 1);
 
     // si noquedan gastos para esa fecha, se borrara la fecha
-    if (gastos[mes].length === 0) {
+    if (gastos[mes].lista.length === 0 && !gastos[mes].sueldo) {
         delete gastos[mes];
     }
 
@@ -120,7 +148,7 @@ function eliminarGasto(mes, index) {
 // Convertir la fecha en "Junio 2025"
 
 function obtenerNombreMes(valor) {
-    const [anio, mes] = valor.splice("_");
+    const [anio, mes] = valor.split("_");
     const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
                     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     
@@ -134,5 +162,6 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('mes-registro').value = mesActual;
 
     // Disparar el evento 'change' para que se carge la vista
-    document.getElementById('mes-registro').dispatchEvent(new Event('change'))
-})
+    document.getElementById('mes-registro').dispatchEvent(new Event('change'));
+    mostrarMesesRegistrados();
+});
