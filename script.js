@@ -11,44 +11,30 @@ const totalSpan = document.getElementById('total');
 let gastos = JSON.parse(localStorage.getItem('gastos')) || {};
 let mesActual = null;
 
-// Mostrarel formulario cuando se elige una fecha
+// Mostrar formulario solo si hay sueldo o gastos
+function actualizarFormularioGasto() {
+    const dataMes = gastos[mesActual] || { sueldo: null, lista: [] };
+    if ((dataMes.sueldo !== null && !isNaN(dataMes.sueldo)) || dataMes.lista.length > 0) {
+        formularioGasto.style.display = 'block';
+    } else {
+        formularioGasto.style.display = 'none';
+    }
+}
+
+// Selección del mes
 mesRegistro.addEventListener('change', () => {
     mesActual = mesRegistro.value;
-    
+
     if (mesActual) {
-        formularioGasto.style.display = 'block';
         mesMostrada.textContent = mesActual;
         mostrarGastosPorMes(mesActual);
+        actualizarFormularioGasto();
     }
 });
 
-// Lista de meses
-function mostrarMesesRegistrados() {
-    const ul = document.getElementById('meses-registrados');
-    ul.innerHTML = '';
+const btnGuardarSueldo = document.getElementById('btn-guardar-sueldo');
 
-    const clavesMeses = Object.keys(gastos);
-    if (clavesMeses.length === 0) {
-        ul.innerHTML = '<li>No hay meses registrados aún.</li>';
-        return;
-    }
-
-    clavesMeses.forEach(mes => {
-        const li = document.createElement('li');
-        const boton = document.createElement('button');
-        boton.textContent = obtenerNombreMes(mes);
-        boton.onclick = () => seleccionarMes(mes);
-        li.appendChild(boton);
-        ul.appendChild(li);
-    });
-}
-
-function seleccionarMes(mes) {
-    document.getElementById('mes-registro').value = mes;
-    document.getElementById('mes-registro').dispatchEvent(new Event('change'));
-}
-
-inputSueldo.addEventListener('input', () => {
+btnGuardarSueldo.addEventListener('click', () => {
     const nuevoSueldo = parseFloat(inputSueldo.value);
     if (!mesActual) return;
 
@@ -59,6 +45,10 @@ inputSueldo.addEventListener('input', () => {
     gastos[mesActual].sueldo = isNaN(nuevoSueldo) ? null : nuevoSueldo;
     localStorage.setItem('gastos', JSON.stringify(gastos));
     mostrarGastosPorMes(mesActual);
+    actualizarFormularioGasto();
+
+    inputSueldo.disabled = true;
+    btnGuardarSueldo.disabled = true;
 });
 
 // Agregar gasto al formulario
@@ -71,22 +61,16 @@ gastoForm.addEventListener('submit', (e) => {
     const pagado = document.getElementById('estado').checked;
 
     if (!mesActual) return alert('Primero selecciona un mes');
-    
+
     const nuevoGasto = { nombre, monto, fecha: fechaGasto, pagado };
 
-    // crea array si no hay un array para la fecha
     if (!gastos[mesActual]) {
-        gastos[mesActual] = {
-            sueldo: null,
-            lista: []
-        };
+        gastos[mesActual] = { sueldo: null, lista: [] };
     }
 
-    // Guardamos el nuevo gasto
     gastos[mesActual].lista.push(nuevoGasto);
-    localStorage.setItem('gastos', JSON.stringify(gastos)); // actualiza el localStorage
+    localStorage.setItem('gastos', JSON.stringify(gastos));
 
-    // Limpiar el formulario y actualizar la lista
     gastoForm.reset();
     mostrarGastosPorMes(mesActual);
 });
@@ -95,20 +79,20 @@ gastoForm.addEventListener('submit', (e) => {
 function mostrarGastosPorMes(mes) {
     listaGastos.innerHTML = '';
     let total = 0;
-    
+
     const dataMes = gastos[mes] || { sueldo: null, lista: [] };
 
     inputSueldo.value = dataMes.sueldo ?? '';
 
-    const gastosMes = dataMes.lista; 
+    const gastosMes = dataMes.lista;
 
     gastosMes.forEach((gasto, index) => {
-    total += gasto.monto;
+        total += gasto.monto;
 
-    const li = document.createElement('li');
-    li.innerHTML = `
-        ${gasto.nombre} - $${gasto.monto} - ${gasto.fecha} - ${gasto.pagado ? '✅ Pagado' : '❌ No pagado'}
-        <button onclick="eliminarGasto ('${mes}', ${index}) id="delete">Eliminar</button>`;
+        const li = document.createElement('li');
+        li.innerHTML = `
+            ${gasto.nombre} - $${gasto.monto} - ${gasto.fecha} - ${gasto.pagado ? '✅ Pagado' : '❌ No pagado'}
+            <button onclick="eliminarGasto('${mes}', ${index})" id="delete">Eliminar</button>`;
 
         listaGastos.appendChild(li);
     });
@@ -128,14 +112,13 @@ function mostrarGastosPorMes(mes) {
         infoSueldo.style.display = 'none';
     }
 
-    mostrarMesesRegistrados(); // refresca la vista cuando se agregan/eliminan datos
+    actualizarFormularioGasto();
 }
 
 // Eliminar gasto seleccionado
 function eliminarGasto(mes, index) {
     gastos[mes].lista.splice(index, 1);
 
-    // si noquedan gastos para esa fecha, se borrara la fecha
     if (gastos[mes].lista.length === 0 && !gastos[mes].sueldo) {
         delete gastos[mes];
     }
@@ -144,24 +127,10 @@ function eliminarGasto(mes, index) {
     mostrarGastosPorMes(mes);
 }
 
-
-// Convertir la fecha en "Junio 2025"
-
-function obtenerNombreMes(valor) {
-    const [anio, mes] = valor.split("_");
-    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-                    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    
-    return `${meses[parseInt(mes) - 1]} ${anio}`;
-}
-
-// seleccion del mes al iniciar la pagina
+// Iniciar
 window.addEventListener('DOMContentLoaded', () => {
     const hoy = new Date();
-    const mesActual = hoy.toISOString().slice(0, 7);
-    document.getElementById('mes-registro').value = mesActual;
-
-    // Disparar el evento 'change' para que se carge la vista
-    document.getElementById('mes-registro').dispatchEvent(new Event('change'));
-    mostrarMesesRegistrados();
+    const mesHoy = hoy.toISOString().slice(0, 7);
+    mesRegistro.value = mesHoy;
+    mesRegistro.dispatchEvent(new Event('change'));
 });

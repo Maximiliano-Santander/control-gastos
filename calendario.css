@@ -1,0 +1,119 @@
+/* calendario.css */
+
+#calendario-contenedor {
+    max-width: 1600px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#calendario-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 10rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+#calendario-header button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: #3b82f6;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+#calendario-header button:hover {
+    background-color: #2563eb;
+}
+
+#tabla-calendario {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+#tabla-calendario th, #tabla-calendario td {
+    padding: 1rem;
+    border: 1px solid #ccc;
+    width: calc(100% / 7);
+    height: 80px;
+}
+
+#tabla-calendario th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    color: #444;
+}
+
+.dia-calendario {
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: background-color 0.2s;
+}
+
+.dia-calendario:hover {
+    background-color: #e0f2fe;
+    border-radius: 5px;
+}
+
+.dia-con-gasto {
+    background-color: #fde68a !important;
+    border: 2px solid #f59e0b;
+    font-weight: bold;
+}
+
+#acciones-mes {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f9fafb;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+#acciones-mes button {
+    padding: 0.5rem 1rem;
+    background-color: #10b981;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#acciones-mes button:hover {
+    background-color: #059669;
+}
+
+/* ajuste del layout para diferentes tamaños de pantallas */
+@media screen and (max-width: 768px) {
+    #contenedor-principal {
+        flex-direction: column;
+    }
+
+    #calendario-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    header nav a {
+        margin-left: 0;
+        margin: 0.5rem 0;
+    }
+}

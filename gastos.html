@@ -3,41 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de Gastos</title>
+    <title>Control de Gastos Mensuales</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="header.css">
 </head>
 <body>
-
     <header>
         <h1>Control de Gastos</h1>
         <nav>
-            <a href="index.html">Inicio</a>
+            <a href="inicio.html">Inicio</a>
             <a href="gastos.html">Gastos</a>
         </nav>
     </header>
 
     <main>
-        <section id="vista-meses">
-            <h2>Meses Registrados</h2>
-            <ul id="meses-registrados"></ul>
-        </section>
-
         <!-- Selección de mes -->
         <section id="seleccion-fecha">
             <label for="mes-registro">Selecciona un mes:</label>
             <input type="month" id="mes-registro">
 
             <label for="input-sueldo">Sueldo disponible para este mes (Opcional):</label>
-            <input type="number" id="input-sueldo" placeholder="Ej: $200000">
+            <div id="sueldo-container">
+                <input type="number" id="input-sueldo" placeholder="Ingresa el sueldo..." />
+                <button id="btn-guardar-sueldo">Guardar Sueldo</button>
+            </div>
+
         </section>
 
         <!-- Contenedor principal: formulario + lista -->
         <section id="contenedor-principal">
-
             <!-- Columna izquierda: formulario -->
             <div id="columna-formulario">
-                <section id="formulario-gasto" style="display: none;">
+                <section id="formulario-gasto">
                     <h2>Agregar Gasto para <span id="mes-seleccionado"></span></h2>
 
                     <form id="gasto-form">
@@ -51,7 +48,6 @@
 
                         <button type="submit">Agregar Gasto</button>
                     </form>
-
                 </section>
             </div>
 
@@ -62,24 +58,24 @@
                     <ul id="lista-gastos"></ul>
                 </section>
             </div>
-
         </section>
 
         <!-- Total del mes debajo -->
         <section id="seccion-total">
-
             <h3>Total del Mes: $<span id="total">0</span></h3>
 
-            <!-- sueldo para agregar -->
-
             <div id="info-sueldo" style="display: none;">
-                <p>Sueldo: $<span id="sueldo-mostrado"</span></p>
-                <p>Saldo restante: $<span id="saldo-restante"</span></p>
+                <p>Sueldo: $<span id="sueldo-mostrado"></span></p>
+                <p>Saldo restante: $<span id="saldo-restante"></span></p>
             </div>
-
         </section>
     </main>
 
+    <script>
+        const formularioGasto = document.getElementById('formulario-gasto');
+        formularioGasto.style.display = 'none'; // Inicialmente oculto
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
+

@@ -1,7 +1,7 @@
 let gastos = JSON.parse(localStorage.getItem('gastos')) || {};
 
 function obtenerNombreMes(valor) {
-    const [anio, mes] = valor.split("_");
+    const [anio, mes] = valor.splice("_");
     const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
                     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     
