@@ -1,44 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio - Control de Gastos</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/header.css" />
-    <link rel="stylesheet" href="css/calendario.css" />
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/calendario.css">
 </head>
 <body>
     <header>
         <h1>Control de Gastos Mensuales</h1>
         <nav>
         <a href="inicio.html">Inicio</a>
-        <a href="gastos.html">Registrar gastos</a>
+        <a href="gastos.html">Registrar Gastos</a>
         </nav>
     </header>
 
     <main>
+        <!-- Calendario interactivo -->
         <section id="calendario-contenedor">
-            <!-- Calendario interactivo -->
-            <div id="calendario-header">
-                <button id="prev-mes">«</button>
-                <span id="mes-actual"></span>
-                <button id="next-mes">»</button>
-            </div>
-            <table id="tabla-calendario">
-                <thead>
-                <tr>
-                    <th>Dom</th><th>Lun</th><th>Mar</th><th>Mié</th>
-                    <th>Jue</th><th>Vie</th><th>Sáb</th>
-                </tr>
-                </thead>
-                <tbody id="cuerpo-calendario">
-                <!-- Días del mes se rellenan con JS -->
-                </tbody>
-            </table>
-            <div id="acciones-mes">
-                <!-- Aquí aparecerá el resumen o el botón de registrar -->
-            </div>
+        <div id="calendario-header">
+            <button id="prev-mes">«</button>
+            <span id="mes-actual"></span>
+            <button id="next-mes">»</button>
+        </div>
+        <table id="tabla-calendario">
+            <thead>
+            <tr>
+                <th>Dom</th><th>Lun</th><th>Mar</th><th>Mié</th>
+                <th>Jue</th><th>Vie</th><th>Sáb</th>
+            </tr>
+            </thead>
+            <tbody id="cuerpo-calendario"></tbody>
+        </table>
+        <div id="acciones-mes"></div>
         </section>
     </main>
 
