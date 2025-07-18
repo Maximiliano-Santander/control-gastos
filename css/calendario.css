@@ -14,7 +14,7 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 1rem;
-    gap: 10rem;
+    gap: 2rem;
     font-size: 1.5rem;
     font-weight: bold;
     color: #333;
@@ -43,7 +43,8 @@
     margin-bottom: 1rem;
 }
 
-#tabla-calendario th, #tabla-calendario td {
+#tabla-calendario th,
+#tabla-calendario td {
     padding: 1rem;
     border: 1px solid #ccc;
     width: calc(100% / 7);
@@ -57,19 +58,25 @@
 }
 
 .dia-calendario {
-    cursor: pointer;
     background-color: #f9f9f9;
     transition: background-color 0.2s;
+    cursor: pointer;
+    border-radius: 4px;
 }
 
 .dia-calendario:hover {
     background-color: #e0f2fe;
-    border-radius: 5px;
 }
 
-.dia-con-gasto {
-    background-color: #fde68a !important;
-    border: 2px solid #f59e0b;
+.dia-pagado {
+    background-color: #d1fae5;
+    border: 2px solid #10b981;
+    font-weight: bold;
+}
+
+.dia-no-pagado {
+    background-color: #fee2e2;
+    border: 2px solid #ef4444;
     font-weight: bold;
 }
 
@@ -79,24 +86,87 @@
     background-color: #f9fafb;
     border: 1px solid #ccc;
     border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-#acciones-mes button {
-    padding: 0.5rem 1rem;
-    background-color: #10b981;
-    border: none;
-    color: white;
+/* Resumen del mes: tarjetas */
+.resumen-mes {
+    display: flex;
+    gap: 5rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.resumen-mes .card {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    flex: 1;
+}
+
+.resumen-mes .card h4 {
+    margin: 0 0 0.5rem;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.resumen-mes .card p {
+    margin: 0;
+    font-size: 1.3rem;
     font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s;
 }
 
-#acciones-mes button:hover {
-    background-color: #059669;
+/* Barra de progreso */
+.progress-container {
+    width: 80%;
+    background: #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+    height: 1rem;
 }
 
-/* ajuste del layout para diferentes tamaños de pantallas */
+.progress-bar {
+    height: 100%;
+    background: #3b82f6;
+}
+
+/* Detalle de gastos por día */
+.detalle-dia {
+    background: #fff;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.detalle-dia h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.detalle-dia ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+}
+
+.detalle-dia ul li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.detalle-dia ul li:last-child {
+    border-bottom: none;
+}
+
+/* Ajustes responsivos */
 @media screen and (max-width: 768px) {
     #contenedor-principal {
         flex-direction: column;

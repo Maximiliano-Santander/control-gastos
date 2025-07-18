@@ -11,17 +11,27 @@ const infoSueldo = document.getElementById('info-sueldo');
 const sueldoSpan = document.getElementById('sueldo-mostrado');
 const saldoSpan = document.getElementById('saldo-restante');
 
-// Estado y almacenamiento
+// Datos almacenados
 let gastos = JSON.parse(localStorage.getItem('gastos')) || {};
 let mesActual = null;
 
-// Función para leer parámetro 'mes' de la URL
+// Función para formatear pesos chilenos
+function formatearPesos(valor) {
+    return valor != null
+        ? valor.toLocaleString('es-CL')
+        : '—';
+}
+
+// Ocultar inicialmente el formulario de gastos
+formularioGasto.style.display = 'none';
+
+// Leer parámetro de mes de la URL
 function obtenerParametroMes() {
     const params = new URLSearchParams(window.location.search);
     return params.get('mes');
 }
 
-// Muestra u oculta el formulario de gastos
+// Mostrar u ocultar el formulario de gastos
 function actualizarFormularioGasto() {
     if (!mesActual) return;
     const datos = gastos[mesActual] || { sueldo: null, lista: [] };
@@ -30,38 +40,7 @@ function actualizarFormularioGasto() {
         : 'none';
 }
 
-// Carga y muestra los gastos para el mes dado
-function mostrarGastosPorMes(mes) {
-    listaGastos.innerHTML = '';
-    totalSpan.textContent = '0';
-    if (!mes) return;
-
-    const datos = gastos[mes] || { sueldo: null, lista: [] };
-    inputSueldo.value = datos.sueldo ?? '';
-
-    let total = 0;
-    datos.lista.forEach((gasto, index) => {
-        total += gasto.monto;
-        const li = document.createElement('li');
-        li.innerHTML = `
-        ${gasto.nombre} - $${gasto.monto} - ${gasto.fecha} - ${
-            gasto.pagado ? '✅ Pagado' : '❌ No pagado'}
-        <button onclick="eliminarGasto('${mes}', ${index})">Eliminar</button>
-        `;
-        listaGastos.appendChild(li);
-    });
-    totalSpan.textContent = total;
-
-    if (datos.sueldo !== null) {
-        infoSueldo.style.display = 'block';
-        sueldoSpan.textContent = datos.sueldo;
-        saldoSpan.textContent = (datos.sueldo - total).toFixed(2);
-    } else {
-        infoSueldo.style.display = 'none';
-    }
-}
-
-// Maneja la selección de mes
+// Manejar cambio de mes seleccionado
 mesRegistro.addEventListener('change', () => {
     mesActual = mesRegistro.value;
     if (!mesActual) {
@@ -114,6 +93,36 @@ function eliminarGasto(mes, index) {
     localStorage.setItem('gastos', JSON.stringify(gastos));
     mostrarGastosPorMes(mesActual);
     actualizarFormularioGasto();
+}
+
+// Mostrar gastos y totales para el mes
+function mostrarGastosPorMes(mes) {
+    listaGastos.innerHTML = '';
+    totalSpan.textContent = '0';
+    if (!mes) return;
+
+    const datos = gastos[mes] || { sueldo: null, lista: [] };
+    inputSueldo.value = datos.sueldo ?? '';
+
+    let total = 0;
+    datos.lista.forEach((gasto, i) => {
+        total += gasto.monto;
+        const li = document.createElement('li');
+        li.innerHTML = `
+        ${gasto.nombre} - $${formatearPesos(gasto.monto)} - ${gasto.fecha} - ${
+            gasto.pagado ? '✅ Pagado' : '❌ No pagado'}
+        <button onclick="eliminarGasto('${mes}', ${i})">Eliminar</button>`;
+        listaGastos.appendChild(li);
+    });
+    totalSpan.textContent = formatearPesos(total);
+
+    if (datos.sueldo !== null && !isNaN(datos.sueldo)) {
+        infoSueldo.style.display = 'block';
+        sueldoSpan.textContent = formatearPesos(datos.sueldo);
+        saldoSpan.textContent = formatearPesos(datos.sueldo - total);
+    } else {
+        infoSueldo.style.display = 'none';
+    }
 }
 
 // Inicializa la página con el mes de la URL o el mes actual
